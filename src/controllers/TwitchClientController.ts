@@ -6,7 +6,6 @@ export class TwitchClientController {
         dotenv.config();
 
         const client = new Client({
-            options: { debug: true },
             connection: {
                 secure: true,
                 reconnect: true,
