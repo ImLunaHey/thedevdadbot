@@ -10,5 +10,5 @@ export const twitchClient = new Client({
         username: env.TWITCH_USERNAME,
         password: env.TWITCH_ACCESS_TOKEN,
     },
-    channels: env.TWITCH_CHANNELS,
+    channels: [env.TWITCH_CHANNEL],
 });

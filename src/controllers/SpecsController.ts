@@ -2,12 +2,13 @@ import os from 'os';
 import { twitchClient } from '@app/twitch-client';
 import { outdent } from 'outdent';
 import systeminformation from 'systeminformation';
+import { env } from '@app/env';
 
 export class SpecsController {
     private static cache: string | null = null;
 
     public static async handle() {
-        await twitchClient.say('#thedevdad_', await SpecsController.generateSpecsResponse());
+        await twitchClient.say(`#${env.TWITCH_CHANNEL}`, await SpecsController.generateSpecsResponse());
     }
 
     public static async generateSpecsResponse() {

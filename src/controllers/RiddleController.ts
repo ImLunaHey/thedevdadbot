@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { SceneController } from '@app/controllers/SceneController';
 import { setTimeout } from 'timers/promises';
 import { twitchClient } from '@app/twitch-client';
+import { env } from '@app/env';
 
 export class RiddleController {
     public static handle(message: string, username: string) {
@@ -24,7 +25,7 @@ export class RiddleController {
     }
 
     public static async handleRiddleRequest(riddle: string) {
-        await twitchClient.say('#thedevdad_', `daily riddle: ${riddle}`);
+        await twitchClient.say(`#${env.TWITCH_CHANNEL}`, `daily riddle: ${riddle}`);
     }
 
     public static async handleRiddleAnswerAttempt(username: string, message: string, answer: string) {
@@ -34,7 +35,7 @@ export class RiddleController {
     }
 
     public static async handleCorrectAnswer(username: string) {
-        await twitchClient.say('#thedevdad_', `${username}, you got the riddle correct!`);
+        await twitchClient.say(`#${env.TWITCH_CHANNEL}`, `${username}, you got the riddle correct!`);
 
         RiddleController.changeSceneToWinner();
 

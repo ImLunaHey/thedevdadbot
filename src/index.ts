@@ -4,6 +4,7 @@ import { logger } from './logger';
 import { twitchClient } from './twitch-client';
 import { SpecsController } from '@app/controllers/SpecsController';
 import { CommandsController } from './controllers/CommandsController';
+import { env } from '@app/env';
 
 export const messageHandlers = {
     '!fishcam': FishController.handle,
@@ -21,7 +22,7 @@ const app = async () => {
             const username = state['display-name'];
 
             // Ignore messages from the bot
-            if (!username || username === 'thedevdadbot') return;
+            if (!username || username === env.TWITCH_CHANNEL) return;
 
             // Log the message and who sent it
             logger.logChat(username, message);

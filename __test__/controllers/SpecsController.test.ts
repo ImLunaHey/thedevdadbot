@@ -1,4 +1,5 @@
 import { SpecsController } from '@app/controllers/SpecsController';
+import { env } from '@app/env';
 import { twitchClient } from '@app/twitch-client';
 import { outdent } from 'outdent';
 
@@ -14,7 +15,7 @@ describe('SpecsController', () => {
             SpecsController.getStorage = jest.fn().mockReturnValue('465GB');
 
             await SpecsController.handle();
-            expect(mockedSay).toHaveBeenCalledWith('#thedevdad_', outdent`
+            expect(mockedSay).toHaveBeenCalledWith(`#${env.TWITCH_CHANNEL}`, outdent`
                 CPU: Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
                 GPU: Intel Iris Pro, AMD Radeon R9 M370X
                 RAM: 16GB
