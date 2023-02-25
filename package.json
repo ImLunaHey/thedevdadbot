@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsup --watch --dts src/index.ts --onSuccess=\"node dist/index.js\"",
-    "build": "tsup --dts src/index.ts",
-    "start": "node dist/index.js",
+    "dev": "tsup src/index.ts --onSuccess=\"npm run start -s\" --watch",
+    "build": "tsup src/index.ts --dts",
+    "start": "cross-env NODE_NO_WARNINGS=1 node dist/index.js",
     "test": "NODE_ENV=test jest",
     "coverage": "npm run test -- --coverage",
     "lint": "eslint . --ext .ts"
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/beerent/thedevdadbot#readme",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "outdent": "^0.8.0",
     "systeminformation": "^5.17.10",
