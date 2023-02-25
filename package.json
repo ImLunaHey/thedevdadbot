@@ -1,13 +1,39 @@
 {
-  "devDependencies": {
-    "@types/dotenv": "^8.2.0",
-    "@types/node": "^18.14.0",
-    "@types/tmi.js": "^1.8.3",
-    "typescript": "^4.9.5"
+  "name": "thedevdadbot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsup --watch --dts src/index.ts --onSuccess=\"node dist/index.js\"",
+    "build": "tsup --dts src/index.ts",
+    "start": "node dist/index.js",
+    "test": "NODE_ENV=test jest",
+    "coverage": "npm run test -- --coverage",
+    "lint": "eslint . --ext .ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beerent/thedevdadbot.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/beerent/thedevdadbot/issues"
+  },
+  "homepage": "https://github.com/beerent/thedevdadbot#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "tmi": "^2.0.0",
-    "tmi.js": "^1.8.5"
+    "tmi.js": "^1.8.5",
+    "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "@types/node": "^18.14.1",
+    "@types/tmi.js": "^1.8.3",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.34.0",
+    "jest": "^29.4.3",
+    "ts-jest": "^29.0.5",
+    "typescript": "^4.9.5"
   }
 }
