@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsup src/index.ts --onSuccess=\"npm run start -s\" --watch",
     "build": "tsup src/index.ts --dts",
-    "start": "cross-env NODE_NO_WARNINGS=1 node dist/index.js",
+    "start": "cross-env NODE_NO_WARNINGS=1 NODE_ENV=production node dist/index.js",
     "test": "NODE_ENV=test jest",
     "coverage": "npm run test -- --coverage",
     "lint": "eslint . --ext .ts"
