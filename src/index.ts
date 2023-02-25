@@ -2,10 +2,12 @@ import { RiddleController } from './controllers/RiddleController';
 import { FishController } from './controllers/FishController';
 import { logger } from './logger';
 import { twitchClient } from './twitch-client';
+import { SpecsController } from '@app/controllers/SpecsController';
 
 const messageHandlers = {
     '!fishcam': FishController.handle,
     '!riddle': RiddleController.handle,
+    '!specs': SpecsController.handle,
 } satisfies Record<string, (message: string, username: string) => Promise<void>>;
 
 twitchClient.on('message', (_channel, state, message) => {
