@@ -1,6 +1,5 @@
 import { twitchClient } from '@app/twitch-client';
-import { exec } from 'child_process';
-import { messageHandlers } from '..';
+import { messageHandlers } from '@app/index';
 
 export class CommandsController {
     public static async handle() {
