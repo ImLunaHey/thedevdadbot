@@ -23,6 +23,12 @@ class Logger {
         console.log(`${prefix} ${finalMessage}`);
     }
 
+    error(message: string) {
+        const prefix = this.colorizeString(`[${new Date().toLocaleTimeString()}] [APP]`, 'red');
+        const finalMessage = this.colorizeString(message, 'red');
+        console.log(`${prefix} ${finalMessage}`);
+    }
+
     colorizeString(string: string, colour: keyof typeof colours) {
         return `\x1b[${colours[colour]}m${string}${resetColor}`;
     }
