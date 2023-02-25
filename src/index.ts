@@ -17,20 +17,25 @@ const app = async () => {
 
     // Add a listener for when a message is received
     twitchClient.on('message', (_channel, state, message) => {
-        const username = state['display-name'];
+        try {
+            const username = state['display-name'];
 
-        // Ignore messages from the bot
-        if (!username || username === 'thedevdadbot') return;
+            // Ignore messages from the bot
+            if (!username || username === 'thedevdadbot') return;
 
-        // Log the message and who sent it
-        logger.logChat(username, message);
+            // Log the message and who sent it
+            logger.logChat(username, message);
 
-        // Get the command from the message
-        const command = message.split(' ')[0] as keyof typeof messageHandlers;
+            // Get the command from the message
+            const command = message.split(' ')[0] as keyof typeof messageHandlers;
 
-        // If this is a command we know about, handle it
-        if (messageHandlers[command]) void messageHandlers[command](message, username);
-        else void messageHandlers['!riddle'](message, username);
+            // If this is a command we know about, handle it
+            if (messageHandlers[command]) void messageHandlers[command](message, username);
+            else void messageHandlers['!riddle'](message, username);
+        } catch (error) {
+            if (error instanceof Error) logger.error(error.message);
+            else logger.error(`Unhandled error: ${String(error)}`);
+        }
     });
 
     // Connect to Twitch
@@ -39,7 +44,7 @@ const app = async () => {
 };
 
 app().catch(error => {
-    if (!(error instanceof Error)) throw new Error('Unhandled error ' + String(error));
-    logger.log(error.message);
+    if (error instanceof Error) logger.error(error.message);
+    else logger.error(`Unhandled error: ${String(error)}`);
     process.exit(1);
 });
