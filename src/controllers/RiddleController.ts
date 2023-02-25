@@ -11,8 +11,8 @@ export class RiddleController {
     }
 
     public handle(username: string, message: string) {
-        const riddle = 'what goes up but never comes down?';
-        const answer = 'age';
+        const riddle = 'What is the object-oriented way to become wealthy?';
+        const answer = 'inheritance';
 
         if (this.isRiddleRequest(message)) {
             this.handleRiddleRequest(riddle);

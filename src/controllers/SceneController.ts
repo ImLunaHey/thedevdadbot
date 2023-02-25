@@ -1,5 +1,4 @@
 import { exec } from 'child_process';
-import { RiddleController } from './RiddleController';
 
 export class SceneController {
     public static changeToPrimaryScene() {
