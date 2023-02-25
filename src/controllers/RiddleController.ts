@@ -4,13 +4,7 @@ import { setTimeout } from 'timers/promises';
 import { twitchClient } from '@app/twitch-client';
 
 export class RiddleController {
-    private client: Client;
-
-    constructor(client: Client) {
-        this.client = client;
-    }
-
-    public handle(username: string, message: string) {
+    public static handle(message: string, username: string) {
         const riddle = 'What is the object-oriented way to become wealthy?';
         const answer = 'inheritance';
 

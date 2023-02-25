@@ -6,9 +6,9 @@ jest.mock('@app/twitch-client');
 describe('RiddleController', () => {
     describe('handle', () => {
         it('should return a riddle', async () => {
-            const say = jest.mocked(twitchClient.say);
+            const mockedSay = jest.mocked(twitchClient.say);
             await RiddleController.handle('!riddle', 'randomUser');
-            expect(say).toHaveBeenCalledWith('#thedevdad_', 'daily riddle: what goes up but never comes down?');
+            expect(mockedSay).toHaveBeenCalledWith('#thedevdad_', 'daily riddle: What is the object-oriented way to become wealthy?');
         });
     });
 });
