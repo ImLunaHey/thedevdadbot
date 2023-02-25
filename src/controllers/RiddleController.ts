@@ -1,66 +1,59 @@
-import { Client } from 'tmi.js';
-import fs from 'fs';
-import { SceneController } from './SceneController';
+import { readFile, writeFile } from 'fs/promises';
+import { SceneController } from '@app/controllers/SceneController';
 import { setTimeout } from 'timers/promises';
+import { twitchClient } from '@app/twitch-client';
 
 export class RiddleController {
-    private client: Client;
-
-    constructor(client: Client) {
-        this.client = client;
-    }
-
-    public handle(username: string, message: string) {
+    public static handle(message: string, username: string) {
         const riddle = 'what goes up but never comes down?';
         const answer = 'age';
 
-        if (this.isRiddleRequest(message)) {
-            this.handleRiddleRequest(riddle);
-        } else {
-            this.handleRiddleAnswerAttempt(username, message, answer);
-        }
+        // Start a new riddle
+        if (RiddleController.isRiddleRequest(message)) return RiddleController.handleRiddleRequest(riddle);
+
+        // User attempting to answer the riddle
+        return RiddleController.handleRiddleAnswerAttempt(username, message, answer);
     }
 
-    private isRiddleRequest(message: string) {
+    public static isRiddleRequest(message: string) {
         return message.toLowerCase() === '!riddle';
     }
 
-    private isRiddleAnswerAttempt(message: string) {
+    public static isRiddleAnswerAttempt(message: string) {
         return message.toLowerCase().startsWith('!riddle ');
     }
 
-    private handleRiddleRequest(riddle: string) {
-        this.client.say('#thedevdad_', `daily riddle: ${riddle}`);
+    public static async handleRiddleRequest(riddle: string) {
+        await twitchClient.say('#thedevdad_', `daily riddle: ${riddle}`);
     }
 
-    private handleRiddleAnswerAttempt(username: string, message: string, answer: string) {
+    public static async handleRiddleAnswerAttempt(username: string, message: string, answer: string) {
         if (answer.toLowerCase() === message.toLowerCase()) {
-            this.handleCorrectAnswer(username);
+            await RiddleController.handleCorrectAnswer(username);
         }
     }
 
-    private handleCorrectAnswer(username: string) {
-        this.client.say('#thedevdad_', `${username}, you got the riddle correct!`);
+    public static async handleCorrectAnswer(username: string) {
+        await twitchClient.say('#thedevdad_', `${username}, you got the riddle correct!`);
 
-        this.changeSceneToWinner();
+        RiddleController.changeSceneToWinner();
 
-        if (!RiddleController.someoneHasWon()) {
-            this.writeUserToWinnerFile(username);
-        }
+        if (!await RiddleController.someoneHasWon()) await RiddleController.writeUserToWinnerFile(username);
     }
 
-    changeSceneToWinner() {
+    public static changeSceneToWinner() {
         SceneController.changeToWinnerScene();
-        setTimeout(10000).then(() => {
+        void setTimeout(10_000).then(() => {
             SceneController.changeToPrimaryScene();
         });
     }
 
-    public static someoneHasWon() {
-        return fs.existsSync(`out/winner.txt`) && fs.readFileSync(`out/winner.txt`).toString() !== 'unsolved!';
+    public static async someoneHasWon() {
+        const text = await readFile('out/winner.txt', 'utf-8');
+        return text !== 'unsolved!';
     }
 
-    private writeUserToWinnerFile(username: string) {
-        fs.writeFileSync(`out/winner.txt`, username);
+    public static async writeUserToWinnerFile(username: string) {
+        await writeFile('out/winner.txt', username);
     }
 }

@@ -1,32 +1,35 @@
+import { clamp } from '@app/common/clamp';
 import { setTimeout } from 'timers/promises';
-import { SceneController } from './SceneController';
+import { SceneController } from '@app/controllers/SceneController';
 
 export class FishController {
-    public handle(message: string) {
+    /**
+     * Handles the fish cam command
+     * @param message the message to handle
+     */
+    public static async handle(message: string) {
         if (message.toLocaleLowerCase() === '!fishcam') {
-            this.runFishCam(10000);
+            await FishController.runFishCam(10_000);
             return;
         }
 
         if (message.split(' ').length === 2) {
             if (message.split(' ')[0] === '!fishcam') {
-                const durationStr: string = message.split(' ')[1];
+                const requestedDuration = Number(message.split(' ')[1] ?? '0') * 1_000;
+                const duration = clamp(requestedDuration, 300, 20_000);
 
-                let duration = parseInt(durationStr) * 1000;
-                if (duration < 300 || duration > 30000) {
-                    duration = 20000;
-                }
-
-                this.runFishCam(duration);
+                await FishController.runFishCam(duration);
             }
         }
     }
 
-    public runFishCam(duration: number) {
+    /**
+     * Runs the fish cam for the specified duration
+     * @param duration in milliseconds
+     */
+    public static async runFishCam(duration: number) {
         SceneController.changeToFishCamScene();
-
-        setTimeout(duration).then(() => {
-            SceneController.changeToPrimaryScene();
-        });
+        await setTimeout(duration);
+        SceneController.changeToPrimaryScene();
     }
 }
