@@ -38,7 +38,7 @@ export class RiddleController {
 
         RiddleController.changeSceneToWinner();
 
-        if (!await RiddleController.someoneHasWon()) await RiddleController.writeUserToWinnerFile(username);
+        if (!(await RiddleController.someoneHasWon())) await RiddleController.writeUserToWinnerFile(username);
     }
 
     public static changeSceneToWinner() {
