@@ -22,6 +22,8 @@
   "homepage": "https://github.com/beerent/thedevdadbot#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
+    "outdent": "^0.8.0",
+    "systeminformation": "^5.17.10",
     "tmi.js": "^1.8.5",
     "zod": "^3.20.6"
   },
