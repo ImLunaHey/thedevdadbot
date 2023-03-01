@@ -1,10 +1,10 @@
 import { twitchClient } from '@app/twitch-client';
-import { exec } from 'child_process';
-import { messageHandlers } from '..';
+import { messageHandlers } from '@app/index';
+import { env } from '@app/env';
 
 export class CommandsController {
     public static async handle() {
         const khalidsKeys = Object.keys(messageHandlers).join(', ');
-        await twitchClient.say('#thedevdad_', `Available commands: ${khalidsKeys}`);
+        await twitchClient.say(`#${env.TWITCH_CHANNEL}`, `Available commands: ${khalidsKeys}`);
     }
 }

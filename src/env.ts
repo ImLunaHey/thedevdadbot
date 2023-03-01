@@ -2,8 +2,13 @@ import { config } from 'dotenv';
 import type { ZodFormattedError } from 'zod';
 import { z } from 'zod';
 
+// Default to "development" environment
+const currentEnv = process.env.NODE_ENV ?? 'development';
+const currentEnvFilePath = currentEnv === 'production' ? '.env' : `.env.${currentEnv}`;
+console.info(`🚀 Starting bot in "${currentEnv}" mode, using ${currentEnvFilePath}`);
+
 // Load environment variables from .env file
-config({ path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env' });
+config({ path: currentEnvFilePath });
 
 export const formatErrors = (
     errors: ZodFormattedError<Map<string, string>, string>
@@ -23,7 +28,7 @@ export const schema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production']),
     TWITCH_USERNAME: z.string(),
     TWITCH_ACCESS_TOKEN: z.string(),
-    TWITCH_CHANNELS: z.array(z.string()),
+    TWITCH_CHANNEL: z.string(),
 });
 
 /**
@@ -34,7 +39,7 @@ export const serverEnv = {
     NODE_ENV: process.env.NODE_ENV,
     TWITCH_USERNAME: process.env.TWITCH_USERNAME,
     TWITCH_ACCESS_TOKEN: process.env.TWITCH_ACCESS_TOKEN,
-    TWITCH_CHANNELS: process.env.TWITCH_CHANNELS?.split(',').map((channel) => channel.trim()),
+    TWITCH_CHANNEL: process.env.TWITCH_CHANNEL,
 } satisfies Record<keyof z.infer<typeof schema>, z.infer<typeof schema>[keyof z.infer<typeof schema>] | undefined>;
 
 const _Env = schema.safeParse(serverEnv);
