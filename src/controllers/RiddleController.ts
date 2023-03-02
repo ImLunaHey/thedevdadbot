@@ -50,8 +50,12 @@ export class RiddleController {
     }
 
     public static async someoneHasWon() {
-        const text = await readFile('out/winner.txt', 'utf-8');
-        return text !== 'unsolved!';
+        try {
+            const text = await readFile('out/winner.txt', 'utf-8');
+            return text !== 'unsolved!';
+        } catch {
+            return false;
+        }
     }
 
     public static async writeUserToWinnerFile(username: string) {
