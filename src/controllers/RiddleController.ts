@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { SceneController } from '@app/controllers/SceneController';
 import { setTimeout } from 'timers/promises';
 import { twitchClient } from '@app/twitch-client';
@@ -55,6 +55,13 @@ export class RiddleController {
     }
 
     public static async writeUserToWinnerFile(username: string) {
+        // Create the out directory if it doesn't exist
+        await mkdir('out').catch(error => {
+            // Ignore the error if the directory already exists
+            if ((error as { code: string }).code !== 'EEXIST') throw error;
+        });
+
+        // Write the username to the winner file
         await writeFile('out/winner.txt', username);
     }
 }

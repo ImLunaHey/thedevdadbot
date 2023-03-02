@@ -5,7 +5,7 @@ import { z } from 'zod';
 // Default to "development" environment
 const currentEnv = process.env.NODE_ENV ?? 'development';
 const currentEnvFilePath = currentEnv === 'production' ? '.env' : `.env.${currentEnv}`;
-console.info(`🚀 Starting bot in "${currentEnv}" mode, using ${currentEnvFilePath}`);
+if (currentEnv !== 'test') console.info(`🚀 Starting bot in "${currentEnv}" mode, using ${currentEnvFilePath}`);
 
 // Load environment variables from .env file
 config({ path: currentEnvFilePath });
